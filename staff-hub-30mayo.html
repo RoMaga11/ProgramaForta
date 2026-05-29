@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Hub — 30 mayo 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --w:#ffffff;--g50:#f7f7f7;--g100:#eeeeee;--g200:#d8d8d8;--g400:#999;--g600:#555;--g800:#1a1a1a;
+  --red:#e8192c;--red-l:#fff0f1;--red-d:#b50e1e;
+  --neon:#39ff14;--neon-l:#edffd4;--neon-d:#1a6b00;
+  --font:'Space Grotesk',sans-serif;--mono:'DM Mono',monospace;
+}
+body{font-family:var(--font);background:var(--w);color:var(--g800);font-size:15px;line-height:1.65}
+
+/* HEADER */
+header{background:var(--g800);border-bottom:3px solid var(--red)}
+.h-inner{max-width:1100px;margin:0 auto;padding:2rem 2rem 1.4rem;display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.h-title{font-size:2rem;font-weight:700;color:var(--w);letter-spacing:-0.03em;line-height:1.1}
+.h-title span{color:var(--neon)}
+.h-sub{font-size:12px;color:var(--g400);margin-top:5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em}
+.badge{background:var(--red);color:var(--w);font-size:11px;font-weight:600;padding:5px 14px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* NAV */
+nav{background:var(--g800);border-bottom:1px solid #2e2e2e}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:flex;overflow-x:auto;gap:0}
+.nt{padding:11px 18px;font-size:12px;font-weight:500;color:var(--g400);cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;font-family:var(--font);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;transition:all .15s}
+.nt:hover{color:var(--w)}
+.nt.on{color:var(--neon);border-bottom-color:var(--neon)}
+
+/* MAIN */
+main{max-width:1100px;margin:0 auto;padding:2.5rem 2rem 4rem}
+.panel{display:none}.panel.on{display:block}
+
+/* SECTION LABEL */
+.slabel{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--g400);margin-bottom:1.4rem;display:flex;align-items:center;gap:10px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--g100)}
+
+/* ACCORDION */
+.acc{border:1px solid var(--g200);border-radius:12px;overflow:hidden;margin-bottom:.9rem}
+.acc-h{width:100%;background:var(--w);border:none;padding:1rem 1.3rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:var(--font);font-size:15px;font-weight:600;color:var(--g800);text-align:left;transition:background .15s;gap:1rem}
+.acc-h:hover{background:var(--g50)}
+.acc-h.on{background:var(--g50);border-bottom:1px solid var(--g200)}
+.acc-hl{display:flex;align-items:center;gap:11px}
+.aico{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.aico.r{background:var(--red-l);color:var(--red)}
+.aico.g{background:var(--neon-l);color:var(--neon-d)}
+.aico.gr{background:var(--g100);color:var(--g600)}
+.chev{width:16px;height:16px;border-right:2px solid var(--g400);border-bottom:2px solid var(--g400);transform:rotate(45deg);transition:transform .2s;flex-shrink:0;margin-right:3px}
+.acc-h.on .chev{transform:rotate(-135deg)}
+.acc-b{display:none;padding:1.3rem;background:var(--w)}
+.acc-b.on{display:block}
+
+/* SCHEDULE TABLE */
+.sched{width:100%;border-collapse:collapse}
+.sched tr{border-bottom:1px solid var(--g100)}
+.sched tr:last-child{border-bottom:none}
+.sched td{padding:9px 0;vertical-align:top}
+.tc{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--red);width:75px;white-space:nowrap;padding-right:14px}
+.ec{font-size:14px;color:var(--g800)}
+.dur{font-size:12px;color:var(--g400);margin-left:5px}
+
+/* BRUNCH */
+.bpills{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin-bottom:1.2rem}
+.bpill{background:var(--g50);border-radius:8px;padding:10px 13px}
+.bpill .bl{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--g400);font-family:var(--mono);margin-bottom:3px}
+.bpill .bv{font-size:13px;font-weight:500;color:var(--g800)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:9px;margin-top:.9rem}
+.pc{background:var(--g50);border:1px solid var(--g200);border-radius:10px;padding:11px 13px}
+.pc .pn{font-weight:600;font-size:13px;color:var(--g800);margin-bottom:2px}
+.pc .pf{font-size:13px;color:var(--g600)}
+
+/* ANUNCIOS */
+.alist{list-style:none;display:flex;flex-direction:column;gap:7px}
+.alist li{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;background:var(--g50);border-radius:8px;border-left:3px solid var(--red);font-size:14px}
+.anum{font-family:var(--mono);font-size:11px;color:var(--red);font-weight:600;min-width:18px;margin-top:1px}
+
+/* NOTAS */
+.nitem{padding:12px 15px;background:var(--g50);border-radius:10px;margin-bottom:8px;border-left:3px solid var(--neon)}
+.nq{font-size:13px;font-weight:600;color:var(--g800);margin-bottom:4px}
+.na{font-size:13px;color:var(--g600);line-height:1.55}
+.na.verse{font-style:italic;background:var(--neon-l);border-radius:6px;padding:8px 12px;color:var(--neon-d);margin-top:4px}
+
+/* ACTIVIDADES GRID */
+.acts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.acard{border:1px solid var(--g200);border-radius:12px;overflow:hidden}
+.acard-h{padding:13px 15px;background:var(--g800);display:flex;align-items:flex-start;justify-content:space-between;cursor:pointer;gap:10px;border:none;width:100%;text-align:left;font-family:var(--font)}
+.acard-h.rain{background:#0f2a4e}
+.atitle{font-size:14px;font-weight:600;color:var(--w);line-height:1.3}
+.astaff{font-size:11px;color:var(--g400);margin-top:3px;font-family:var(--mono)}
+.abadge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+.abadge.main{background:var(--neon);color:#0a3300}
+.abadge.rain{background:#4a7fc1;color:#fff}
+.achev{width:12px;height:12px;border-right:2px solid var(--g400);border-bottom:2px solid var(--g400);transform:rotate(45deg);transition:transform .2s;flex-shrink:0;margin-top:4px}
+.acard-h.aon .achev{transform:rotate(-135deg)}
+.acard-b{display:none;padding:13px 15px;background:var(--w)}
+.acard-b.on{display:block}
+.ast{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--g400);margin:11px 0 4px;font-family:var(--mono)}
+.ast:first-child{margin-top:0}
+.atxt{font-size:13px;color:var(--g600);line-height:1.6}
+.mtags{display:flex;flex-wrap:wrap;gap:5px;margin-top:3px}
+.mtag{background:var(--g100);border:1px solid var(--g200);border-radius:6px;padding:3px 8px;font-size:12px;color:var(--g600)}
+.ttags{display:flex;gap:7px;flex-wrap:wrap;margin-top:3px}
+.ttag{background:var(--red-l);color:var(--red-d);font-size:12px;font-weight:500;padding:3px 8px;border-radius:6px;font-family:var(--mono)}
+.alink{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--red);text-decoration:none;margin-top:6px;font-weight:500}
+.alink:hover{text-decoration:underline}
+
+/* ADMIN */
+.lock{text-align:center;padding:3rem 1rem}
+.lock h2{font-size:18px;font-weight:600;margin-bottom:8px}
+.lock p{font-size:14px;color:var(--g400);margin-bottom:1.5rem}
+.pinwrap{display:flex;gap:8px;justify-content:center}
+.pin{width:140px;padding:10px 14px;border:1.5px solid var(--g200);border-radius:8px;font-family:var(--mono);font-size:16px;letter-spacing:.2em;text-align:center;outline:none;color:var(--g800)}
+.pin:focus{border-color:var(--red)}
+.bp{background:var(--red);color:var(--w);border:none;padding:10px 20px;border-radius:8px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:background .15s}
+.bp:hover{background:var(--red-d)}
+.bs{background:var(--g100);color:var(--g800);border:1px solid var(--g200);padding:9px 18px;border-radius:8px;font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;transition:background .15s}
+.bs:hover{background:var(--g200)}
+.aform{display:none}
+.aform.on{display:block}
+.ok{display:none;background:var(--neon-l);border:1px solid var(--neon);border-radius:10px;padding:13px 17px;margin-bottom:1.5rem;font-size:14px;color:var(--neon-d);font-weight:500}
+.ok.on{display:block}
+.fsec{background:var(--g50);border:1px solid var(--g200);border-radius:12px;padding:1.3rem;margin-bottom:1.4rem}
+.fsec h3{font-size:14px;font-weight:600;color:var(--g800);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.fsec h3::before{content:'';width:4px;height:16px;background:var(--red);border-radius:2px;display:block}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-bottom:1.3rem}
+@media(max-width:600px){.fgrid{grid-template-columns:1fr}}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+.fl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--g600);font-family:var(--mono)}
+input[type=text],input[type=date],textarea,select{padding:9px 11px;border:1.5px solid var(--g200);border-radius:8px;font-family:var(--font);font-size:14px;color:var(--g800);background:var(--w);outline:none;transition:border-color .15s;width:100%}
+input[type=text]:focus,input[type=date]:focus,textarea:focus,select:focus{border-color:var(--red)}
+textarea{resize:vertical;min-height:80px}
+.frow{background:var(--w);border:1px solid var(--g200);border-radius:10px;padding:1rem;margin-bottom:9px}
+.frowtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.frowtop span{font-size:13px;font-weight:600;color:var(--g800)}
+.brem{background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;font-weight:500;padding:2px 6px;border-radius:4px;font-family:var(--font)}
+.brem:hover{background:var(--red-l)}
+.badd{background:none;border:1.5px dashed var(--g200);color:var(--g600);padding:8px 14px;border-radius:8px;font-family:var(--font);font-size:13px;cursor:pointer;width:100%;transition:all .15s;margin-top:8px}
+.badd:hover{border-color:var(--red);color:var(--red)}
+.faction{display:flex;gap:10px;justify-content:flex-end;padding-top:1rem;border-top:1px solid var(--g200)}
+
+/* DL BUTTONS */
+.dlrow{display:flex;flex-wrap:wrap;gap:9px;margin-top:1.3rem}
+.dlbtn{display:inline-flex;align-items:center;gap:6px;background:var(--g800);color:var(--w);border:none;padding:8px 15px;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;text-decoration:none;transition:background .15s}
+.dlbtn:hover{background:#111}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--neon)}
+
+footer{border-top:1px solid var(--g200);padding:1.4rem 2rem;text-align:center;font-size:12px;color:var(--g400);font-family:var(--mono)}
+footer span{color:var(--red)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-inner">
+    <div>
+      <div class="h-title">Staff <span>Hub</span></div>
+      <div class="h-sub">Programa semanal — Forta</div>
+    </div>
+    <div class="badge">Sábado 30 mayo 2026</div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <button class="nt on" onclick="tab('programa',this)">Programa</button>
+    <button class="nt" onclick="tab('brunch',this)">Brunch</button>
+    <button class="nt" onclick="tab('anuncios',this)">Anuncios</button>
+    <button class="nt" onclick="tab('notas',this)">Concurso notas</button>
+    <button class="nt" onclick="tab('actividades',this)">Actividades</button>
+    <button class="nt" onclick="tab('admin',this)">Admin</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- PROGRAMA -->
+<div class="panel on" id="panel-programa">
+  <div class="slabel">Tiempos del día</div>
+
+  <div class="acc">
+    <button class="acc-h on" onclick="toggle(this)">
+      <div class="acc-hl"><div class="aico r">&#9679;</div>Cronograma — 30 mayo</div>
+      <div class="chev"></div>
+    </button>
+    <div class="acc-b on">
+      <table class="sched">
+        <tr><td class="tc">09:00</td><td class="ec">Reunión de voluntarios<span class="dur">(30 min)</span></td></tr>
+        <tr><td class="tc">09:30</td><td class="ec">Preparación: Brunch, Alabanza y Actividades<span class="dur">(30 min)</span></td></tr>
+        <tr><td class="tc">10:00</td><td class="ec">Brunch y tiempo en patrulla<span class="dur">(35 min)</span></td></tr>
+        <tr><td class="tc">10:35</td><td class="ec">Alabanza<span class="dur">(25 min)</span></td></tr>
+        <tr><td class="tc">11:00</td><td class="ec">Mensaje<span class="dur">(25 min)</span></td></tr>
+        <tr><td class="tc">11:25</td><td class="ec">Actividades<span class="dur">(30 min)</span></td></tr>
+        <tr><td class="tc">11:55</td><td class="ec">Cierre + anuncios<span class="dur">(5 min)</span></td></tr>
+        <tr><td class="tc">12:00</td><td class="ec" style="font-weight:600">Fin</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="acc">
+    <button class="acc-h" onclick="toggle(this)">
+      <div class="acc-hl"><div class="aico gr">&#9670;</div>Charla y tema</div>
+      <div class="chev"></div>
+    </button>
+    <div class="acc-b">
+      <p class="atxt"><strong>Charla:</strong> Staff</p>
+      <p class="atxt" style="margin-top:7px"><strong>Tema:</strong> <em style="color:var(--g400)">Por definir</em></p>
+    </div>
+  </div>
+
+  <div class="acc">
+    <button class="acc-h" onclick="toggle(this)">
+      <div class="acc-hl"><div class="aico g">&#8659;</div>Descargables</div>
+      <div class="chev"></div>
+    </button>
+    <div class="acc-b">
+      <p class="atxt" style="color:var(--g400);font-size:13px">Los archivos estarán disponibles una vez que el admin agregue los enlaces.</p>
+      <div class="dlrow">
+        <a class="dlbtn" id="dl-pdf" href="#" onclick="return false"><span class="dot"></span>Programa PDF</a>
+        <a class="dlbtn" id="dl-ppt" href="#" onclick="return false"><span class="dot"></span>Presentación PPT</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BRUNCH -->
+<div class="panel" id="panel-brunch">
+  <div class="slabel">Brunch — 30 mayo</div>
+
+  <div class="acc">
+    <button class="acc-h on" onclick="toggle(this)">
+      <div class="acc-hl"><div class="aico r">&#9829;</div>Festival de molletes</div>
+      <div class="chev"></div>
+    </button>
+    <div class="acc-b on">
+      <div class="bpills">
+        <div class="bpill"><div class="bl">Bebida</div><div class="bv">Refresco, jugos y aguas (staff)</div></div>
+        <div class="bpill"><div class="bl">Desechables</div><div class="bv">Platos y vasos</div></div>
+        <div class="bpill"><div class="bl">Decoración</div><div class="bv">Manteles blancos + franja de color, floreros</div></div>
+      </div>
+      <p style="font-size:13px;font-weight:600;color:var(--g800);margin-bottom:9px">Menú por patrulla</p>
+      <div class="pgrid">
+        <div class="pc"><div class="pn">Jirafas</div><div class="pf">Molletes en forma de jirafa</div></div>
+        <div class="pc"><div class="pn">Leones</div><div class="pf">Molletes con longaniza</div></div>
+        <div class="pc"><div class="pn">Impalas</div><div class="pf">Molletes dulces</div></div>
+        <div class="pc"><div class="pn">Dragones</div><div class="pf">Molletes con pan de cuernito</div></div>
+        <div class="pc"><div class="pn">Lobos</div><div class="pf">Molletes con chorizo</div></div>
+        <div class="pc" style="border-left:3px solid var(--red)"><div class="pn">Gaviotas</div><div class="pf">Molletes decorados</div></div>
+        <div class="pc"><div class="pn">Ovejas</div><div class="pf">Molletes con tocino</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANUNCIOS -->
+<div class="panel" id="panel-anuncios">
+  <div class="slabel">Anuncios del día</div>
+
+  <div class="acc">
+    <button class="acc-h on" onclick="toggle(this)">
+      <div class="acc-hl"><div class="aico r">&#128226;</div>Anuncios — 30 mayo</div>
+      <div class="chev"></div>
+    </button>
+    <div class="acc-b on">
+      <ul class="alist">
+        <li><span class="anum">01</span>Zona Forta</li>
+        <li><span class="anum">02</span>Esencia: miércoles 10 junio | 8 pm</li>
+        <li><span class="anum">03</span>Noche de adoración: viernes 19 junio | 8 pm</li>
+        <li><span class="anum">04</span>Reuniones de domingo: 10 am y 12 pm</li>
+        <li><span class="anum">05</span>¡Nos vamos a Prisma! — 29 al 31 de julio</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- NOTAS -->
+<div class="panel" id="panel-notas">
+  <div class="slabel">Concurso de notas</div>
+
+  <div class="acc">
+    <button class="acc-h on" onclick="toggle(this)">
+      <div class="acc-hl"><div class="aico g">&#9998;</div>Preguntas y respuestas</div>
+      <div class="chev"></div>
+    </button>
+    <div class="acc-b on">
+      <div class="nitem">
+        <div class="nq">1. ¿Qué significa Thelema?</div>
+        <div class="na">Voluntad perfecta de Dios</div>
+      </div>
+      <div class="nitem">
+        <div class="nq">2. ¿Qué significa Boulema?</div>
+        <div class="na">Voluntad permisiva de Dios</div>
+      </div>
+      <div class="nitem">
+        <div class="nq">3. ¿Qué dice Filipenses 4:6-7?</div>
+        <div class="na verse">"No se preocupen por nada; más bien, en toda ocasión, con oración y ruego, presenten sus peticiones a Dios y denle gracias. Y la paz de Dios, que sobrepasa todo entendimiento, cuidará sus corazones y sus pensamientos en Cristo Jesús."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACTIVIDADES -->
+<div class="panel" id="panel-actividades">
+  <div class="slabel">Actividades del día</div>
+  <div class="acts-grid">
+
+    <!-- ACT 1: Atrapa el globo -->
+    <div class="acard">
+      <button class="acard-h" onclick="toggleAct(this)">
+        <div>
+          <div class="atitle">Atrapa el globo</div>
+          <div class="astaff">Staff: Mel y Fer</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="abadge main">Principal</span>
+          <div class="achev"></div>
+        </div>
+      </button>
+      <div class="acard-b">
+        <div class="ast">Explicación</div>
+        <p class="atxt">Una persona por patrulla dentro de un área delimitada. Cada patrullero tiene una cubeta a sus espaldas amarrada con cuerda y un globo. Al corto, lanza el globo hacia arriba e intenta atraparlo con la cubeta. El primero que lo logre gana la ronda.</p>
+        <p class="atxt" style="margin-top:7px"><strong>Variación:</strong> El staff y las patrullas lanzan varios globos al azar. Gana el patrullero que atrape más globos.</p>
+
+        <div class="ast">Materiales</div>
+        <div class="mtags">
+          <span class="mtag">Conos</span><span class="mtag">Cal</span><span class="mtag">Cubetas / Jícaras grandes</span><span class="mtag">Cuerdas individuales</span><span class="mtag">Globos</span>
+        </div>
+
+        <div class="ast">Reglas</div>
+        <p class="atxt">El staff decide cuántos jugadores salen por ronda. No se permite contacto físico brusco. La patrulla debe estar atenta a las indicaciones del staff. El patrullero puede tomar el globo de las demás patrullas.</p>
+
+        <div class="ast">Puntuación</div>
+        <p class="atxt">Gana la ronda el patrullero que tomó primero el globo, o el que tomó más globos.</p>
+
+        <div class="ast">Lugar</div>
+        <p class="atxt">Pastito / explanada gris — árbol Casa</p>
+
+        <div class="ast">Tiempos</div>
+        <div class="ttags">
+          <span class="ttag">2–5 min / ronda</span>
+          <span class="ttag">15 min total</span>
+          <span class="ttag">1–2 min explicación</span>
+        </div>
+        <a class="alink" href="https://www.instagram.com/reel/DXRb4S5iLy9/" target="_blank">Ver referencia ↗</a>
+      </div>
+    </div>
+
+    <!-- ACT 2: Circuito -->
+    <div class="acard">
+      <button class="acard-h" onclick="toggleAct(this)">
+        <div>
+          <div class="atitle">Circuito</div>
+          <div class="astaff">Staff: Ro y Smith</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="abadge main">Principal</span>
+          <div class="achev"></div>
+        </div>
+      </button>
+      <div class="acard-b">
+        <div class="ast">Explicación</div>
+        <p class="atxt">Sale al corto 1 persona de su base: pasa por en medio de las piernas de su patrulla formada (mínimo 5 personas), corre a agarrar 1 o 2 pelotas y regresa a base, luego salta la cuerda u obstáculo alto, pasa por debajo de la mesa al lado contrario y voltea vasos (3 intentos), regresa y choca palmas con el primero de la fila para que salga el siguiente.</p>
+
+        <div class="ast">Materiales</div>
+        <div class="mtags">
+          <span class="mtag">Conos</span><span class="mtag">Cuerdas largas</span><span class="mtag">Mesa</span><span class="mtag">Vasos</span><span class="mtag">Pelotas</span>
+        </div>
+
+        <div class="ast">Reglas</div>
+        <p class="atxt">El staff define cuántas personas salen por ronda y las variaciones. El staff decide cuántas pelotas, cuántos intentos, etc.</p>
+
+        <div class="ast">Puntuación</div>
+        <p class="atxt">La patrulla con más pelotas y vasos volteados gana.</p>
+
+        <div class="ast">Lugar</div>
+        <p class="atxt">Pastito</p>
+
+        <div class="ast">Tiempos</div>
+        <div class="ttags">
+          <span class="ttag">2–5 min / ronda</span>
+          <span class="ttag">15 min total</span>
+          <span class="ttag">1–2 min explicación</span>
+        </div>
+        <a class="alink" href="https://www.instagram.com/reel/DWXLnVQjnKo/" target="_blank">Ver referencia ↗</a>
+      </div>
+    </div>
+
+    <!-- LLUVIA 1: Gallina ciega -->
+    <div class="acard">
+      <button class="acard-h rain" onclick="toggleAct(this)">
+        <div>
+          <div class="atitle">Gallina ciega — variaciones</div>
+          <div class="astaff">Staff: Fer y Mel</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="abadge rain">Por si llueve</span>
+          <div class="achev"></div>
+        </div>
+      </button>
+      <div class="acard-b">
+        <div class="ast">Variación 1</div>
+        <p class="atxt">1 persona por patrulla vendada entra al círculo de conos. Una persona tiene un objeto y hace ruido mientras huye; la vendada intenta atraparla. Acaba cuando la atrapa o se acaba el tiempo.</p>
+
+        <div class="ast">Variación 2</div>
+        <p class="atxt">1 persona por patrulla vendada entra al círculo, da vueltas en su propio eje y busca un objeto en el centro. Acaba cuando alguien encuentra el objeto o se acaba el tiempo.</p>
+
+        <div class="ast">Materiales</div>
+        <div class="mtags">
+          <span class="mtag">Conos</span><span class="mtag">Pollos</span><span class="mtag">Paliacates</span>
+        </div>
+
+        <div class="ast">Reglas</div>
+        <p class="atxt">El staff define cuántas personas entran por ronda y el tiempo. Si un patrullero está viendo con el paliacate, queda eliminado automáticamente. El resto solo puede hacer ruidos, no dar indicaciones directas.</p>
+
+        <div class="ast">Puntuación</div>
+        <p class="atxt">Gana el patrullero que encuentre primero el objeto o atrape a la persona. Gana la patrulla con más rondas ganadas.</p>
+
+        <div class="ast">Lugar</div>
+        <p class="atxt">Salón o explanada gris Casa</p>
+
+        <div class="ast">Tiempos</div>
+        <div class="ttags">
+          <span class="ttag">2–5 min / ronda</span>
+          <span class="ttag">15 min total</span>
+          <span class="ttag">1–2 min explicación</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="alink" href="https://vt.tiktok.com/ZS9wDNAUW/" target="_blank">Referencia 1 ↗</a>
+          <a class="alink" href="https://www.instagram.com/reel/DX7swV7uiCv/" target="_blank">Referencia 2 ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LLUVIA 2: Bolsas del dolor -->
+    <div class="acard">
+      <button class="acard-h rain" onclick="toggleAct(this)">
+        <div>
+          <div class="atitle">Bolsas del dolor</div>
+          <div class="astaff">Staff: Smith y Ro</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="abadge rain">Por si llueve</span>
+          <div class="achev"></div>
+        </div>
+      </button>
+      <div class="acard-b">
+        <div class="ast">Explicación</div>
+        <p class="atxt">Un número de patrulleros definido por el staff se coloca frente a frente a una distancia considerable, con bolsas en la mano. Al corto, lanzan la bolsa hacia arriba y corren a atrapar la bolsa que lanzó la patrulla contraria.</p>
+
+        <div class="ast">Materiales</div>
+        <div class="mtags">
+          <span class="mtag">Conos</span><span class="mtag">Bolsas de plástico</span>
+        </div>
+
+        <div class="ast">Reglas</div>
+        <p class="atxt">El staff define cuántas personas entran por ronda. Si el patrullero no logra atrapar la bolsa queda eliminado. La fuerza del lanzamiento la define el staff. Solo se puede lanzar hacia arriba.</p>
+
+        <div class="ast">Puntuación</div>
+        <p class="atxt">Gana la patrulla que quede con más integrantes al final de la ronda.</p>
+
+        <div class="ast">Lugar</div>
+        <p class="atxt">Salón o explanada gris Casa</p>
+
+        <div class="ast">Tiempos</div>
+        <div class="ttags">
+          <span class="ttag">2–5 min / ronda</span>
+          <span class="ttag">15 min total</span>
+          <span class="ttag">1–2 min explicación</span>
+        </div>
+        <a class="alink" href="https://www.instagram.com/reel/DXxEISbJXoP/" target="_blank">Ver referencia ↗</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="panel" id="panel-admin">
+  <div class="slabel">Administración</div>
+
+  <div class="lock" id="lock-box">
+    <h2>Acceso staff</h2>
+    <p>Ingresa el PIN para editar el contenido semanal</p>
+    <div class="pinwrap">
+      <input type="password" class="pin" id="pin-input" maxlength="6" placeholder="· · · · · ·" />
+      <button class="bp" onclick="checkPin()">Entrar</button>
+    </div>
+    <p id="pin-err" style="color:var(--red);font-size:13px;margin-top:10px;display:none">PIN incorrecto</p>
+  </div>
+
+  <div class="aform" id="admin-form">
+    <div class="ok" id="ok-banner">Cambios guardados. Comparte el archivo actualizado con el equipo.</div>
+
+    <div class="fsec">
+      <h3>Información general</h3>
+      <div class="fgrid">
+        <div class="fg"><label class="fl">Fecha del evento</label><input type="date" value="2026-05-30" /></div>
+        <div class="fg"><label class="fl">Charla</label><input type="text" value="Staff" /></div>
+        <div class="fg full"><label class="fl">Tema</label><input type="text" placeholder="Tema del mensaje (por definir)" /></div>
+      </div>
+    </div>
+
+    <div class="fsec">
+      <h3>Tiempos</h3>
+      <div class="fg full"><label class="fl">Cronograma (uno por línea · formato HH:MM Descripción (X min))</label>
+      <textarea rows="9">09:00 Reunión de voluntarios (30 min)
+09:30 Preparación: Brunch, Alabanza y Actividades (30 min)
+10:00 Brunch y tiempo en patrulla (35 min)
+10:35 Alabanza (25 min)
+11:00 Mensaje (25 min)
+11:25 Actividades (30 min)
+11:55 Cierre + anuncios (5 min)
+12:00 Fin</textarea>
+      </div>
+    </div>
+
+    <div class="fsec">
+      <h3>Brunch</h3>
+      <div class="fgrid">
+        <div class="fg"><label class="fl">Comida principal</label><input type="text" value="Festival de molletes" /></div>
+        <div class="fg"><label class="fl">Bebida</label><input type="text" value="Refresco, jugos y aguas (staff)" /></div>
+        <div class="fg"><label class="fl">Desechables</label><input type="text" value="Platos y vasos" /></div>
+        <div class="fg"><label class="fl">Decoración</label><input type="text" value="Manteles blancos + franja de color, floreros" /></div>
+        <div class="fg full"><label class="fl">Menú por patrulla (una por línea · Nombre: descripción)</label>
+        <textarea rows="8">Jirafas: Molletes en forma de jirafa
+Leones: Molletes con longaniza
+Impalas: Molletes dulces
+Dragones: Molletes con pan de cuernito
+Lobos: Molletes con chorizo
+Gaviotas: Molletes decorados
+Ovejas: Molletes con tocino</textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="fsec">
+      <h3>Anuncios</h3>
+      <div id="anuncios-wrap">
+        <div class="frow"><div style="display:flex;gap:8px;align-items:center"><input type="text" value="Zona Forta" /><button class="brem" onclick="this.closest('.frow').remove()">Quitar</button></div></div>
+        <div class="frow"><div style="display:flex;gap:8px;align-items:center"><input type="text" value="Esencia: miércoles 10 junio | 8 pm" /><button class="brem" onclick="this.closest('.frow').remove()">Quitar</button></div></div>
+        <div class="frow"><div style="display:flex;gap:8px;align-items:center"><input type="text" value="Noche de adoración: viernes 19 junio | 8 pm" /><button class="brem" onclick="this.closest('.frow').remove()">Quitar</button></div></div>
+        <div class="frow"><div style="display:flex;gap:8px;align-items:center"><input type="text" value="Reuniones de domingo: 10 am y 12 pm" /><button class="brem" onclick="this.closest('.frow').remove()">Quitar</button></div></div>
+        <div class="frow"><div style="display:flex;gap:8px;align-items:center"><input type="text" value="¡Nos vamos a Prisma! — 29 al 31 de julio" /><button class="brem" onclick="this.closest('.frow').remove()">Quitar</button></div></div>
+      </div>
+      <button class="badd" onclick="addRow('anuncios-wrap','Nuevo anuncio...')">+ Agregar anuncio</button>
+    </div>
+
+    <div class="fsec">
+      <h3>Concurso de notas</h3>
+      <div id="notas-wrap">
+        <div class="frow">
+          <div class="fgrid" style="margin-bottom:0">
+            <div class="fg"><label class="fl">Pregunta 1</label><input type="text" value="¿Qué significa Thelema?" /></div>
+            <div class="fg"><label class="fl">Respuesta</label><input type="text" value="Voluntad perfecta de Dios" /></div>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgrid" style="margin-bottom:0">
+            <div class="fg"><label class="fl">Pregunta 2</label><input type="text" value="¿Qué significa Boulema?" /></div>
+            <div class="fg"><label class="fl">Respuesta</label><input type="text" value="Voluntad permisiva de Dios" /></div>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgrid" style="margin-bottom:0">
+            <div class="fg"><label class="fl">Pregunta 3</label><input type="text" value="¿Qué dice Filipenses 4:6-7?" /></div>
+            <div class="fg"><label class="fl">Respuesta</label><textarea style="min-height:60px">"No se preocupen por nada; más bien, en toda ocasión, con oración y ruego, presenten sus peticiones a Dios y denle gracias. Y la paz de Dios, que sobrepasa todo entendimiento, cuidará sus corazones y sus pensamientos en Cristo Jesús."</textarea></div>
+          </div>
+        </div>
+      </div>
+      <button class="badd" onclick="addNota()">+ Agregar pregunta</button>
+    </div>
+
+    <div class="fsec">
+      <h3>Descargables</h3>
+      <div class="fgrid">
+        <div class="fg"><label class="fl">URL del programa (PDF)</label><input type="text" id="url-pdf" placeholder="https://drive.google.com/..." /></div>
+        <div class="fg"><label class="fl">URL de la presentación (PPT)</label><input type="text" id="url-ppt" placeholder="https://drive.google.com/..." /></div>
+      </div>
+    </div>
+
+    <div class="faction">
+      <button class="bs" onclick="cerrar()">Cancelar</button>
+      <button class="bp" onclick="guardar()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>Generado para <span>staff de forta</span> &nbsp;·&nbsp; 30 mayo 2026</footer>
+
+<script>
+function tab(name,btn){
+  document.querySelectorAll('.nt').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('panel-'+name).classList.add('on');
+}
+function toggle(btn){
+  var b=btn.nextElementSibling;
+  btn.classList.toggle('on');
+  b.classList.toggle('on');
+}
+function toggleAct(h){
+  var b=h.nextElementSibling;
+  h.classList.toggle('aon');
+  b.classList.toggle('on');
+}
+function checkPin(){
+  var v=document.getElementById('pin-input').value;
+  var e=document.getElementById('pin-err');
+  if(v==='1234'){
+    document.getElementById('lock-box').style.display='none';
+    document.getElementById('admin-form').classList.add('on');
+  } else {
+    e.style.display='block';
+    setTimeout(()=>e.style.display='none',2500);
+  }
+}
+document.getElementById('pin-input').addEventListener('keydown',function(e){if(e.key==='Enter')checkPin()});
+function cerrar(){
+  document.getElementById('admin-form').classList.remove('on');
+  document.getElementById('lock-box').style.display='';
+  document.getElementById('pin-input').value='';
+}
+function guardar(){
+  var pdf=document.getElementById('url-pdf').value;
+  var ppt=document.getElementById('url-ppt').value;
+  if(pdf){var a=document.getElementById('dl-pdf');a.href=pdf;a.onclick=null}
+  if(ppt){var b=document.getElementById('dl-ppt');b.href=ppt;b.onclick=null}
+  var ok=document.getElementById('ok-banner');
+  ok.classList.add('on');
+  setTimeout(()=>ok.classList.remove('on'),4000);
+}
+function addRow(containerId,placeholder){
+  var d=document.createElement('div');
+  d.className='frow';
+  d.innerHTML='<div style="display:flex;gap:8px;align-items:center"><input type="text" placeholder="'+placeholder+'" /><button class="brem" onclick="this.closest(\'.frow\').remove()">Quitar</button></div>';
+  document.getElementById(containerId).appendChild(d);
+}
+var nc=3;
+function addNota(){
+  nc++;
+  var d=document.createElement('div');
+  d.className='frow';
+  d.innerHTML='<div class="fgrid" style="margin-bottom:0"><div class="fg"><label class="fl">Pregunta '+nc+'</label><input type="text" placeholder="¿Pregunta?" /></div><div class="fg"><label class="fl">Respuesta</label><input type="text" placeholder="Respuesta" /></div></div>';
+  document.getElementById('notas-wrap').appendChild(d);
+}
+</script>
+</body>
+</html>
